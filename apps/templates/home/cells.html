@@ -1,0 +1,137 @@
+<!--
+MODIFIED: Added interactive cell visualization form
+- Form with cell type selector (square/honeycomb)
+- Input fields: lattice_constant, marker_size, line_width
+- Shows visualization only after form submission (if cell image..)
+- Displays single selected cell type instead of both
+-->
+{% extends "layouts/base.html" %}
+
+{% block title %} Cell Visualization {% endblock %}
+
+{% block content %}
+
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1">Visualization</h6>
+                  <h2 class="mb-0">Cell Structures</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Input Form -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow mb-4">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="mb-0">Generate Cell Visualization</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="{% url 'cells' %}">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="cell_type">Cell Type</label>
+                  <select class="form-control" id="cell_type" name="cell_type" required>
+                    <option value="square" {% if cell_type == 'square' %}selected{% endif %}>Square Cell</option>
+                    <option value="honeycomb" {% if cell_type == 'honeycomb' %}selected{% endif %}>Honeycomb Cell</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="lattice_constant">Lattice Constant (a)</label>
+                  <input type="number" class="form-control" id="lattice_constant" name="lattice_constant" 
+                         step="0.1" min="0.1" max="10" value="{{ lattice_constant|default:'1.0' }}" required>
+                  <small class="form-text text-muted">Size of the unit cell (0.1 - 10)</small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="marker_size">Marker Size</label>
+                  <input type="number" class="form-control" id="marker_size" name="marker_size" 
+                         step="1" min="1" max="50" value="{{ marker_size|default:'10' }}" required>
+                  <small class="form-text text-muted">Size of atoms/points (1 - 50)</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="line_width">Line Width</label>
+                  <input type="number" class="form-control" id="line_width" name="line_width" 
+                         step="0.5" min="0.5" max="10" value="{{ line_width|default:'2' }}" required>
+                  <small class="form-text text-muted">Width of cell edges (0.5 - 10)</small>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <button type="submit" class="btn btn-primary">Generate Visualization</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- {% if cell_image %} -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="mb-0">{% if cell_type == 'square' %}Square Cell{% else %}Honeycomb Cell{% endif %}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="text-center">
+            <img src="data:image/png;base64,{{ cell_image }}" alt="{% if cell_type == 'square' %}Square Cell{% else %}Honeycomb Cell{% endif %}" class="img-fluid" style="max-width: 100%; height: auto;">
+          </div>
+          <div class="mt-4">
+            <p class="text-sm mb-0 text-muted">
+              <!-- {% if cell_type == 'square' %}
+                A square cell represents the simplest 2D lattice structure with perpendicular axes of equal length.
+              {% else %}
+                A honeycomb cell demonstrates a hexagonal lattice structure with 60° angles between axes.
+              {% endif %} -->
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+  $(document).ready(function() {
+    // Add any required JavaScript initialization here
+  });
+</script>
+{% endblock javascripts %}

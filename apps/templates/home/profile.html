@@ -1,22 +1,39 @@
-{% extends 'layouts/base.html' %}
+<!-- Researcher profile: Bio, publications, interests, contact info -->
+{% extends 'layouts/base.html' %} {% block title %} {{ person.name }} - Profile
+{% endblock title %} {% block stylesheets %}
+<style>
+  .profile-image {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
 
-{% block title %} Profile {% endblock title %}
+  .badge {
+    margin: 0.25rem;
+    padding: 0.5rem 0.75rem;
+  }
+</style>
+{% endblock stylesheets %} {% block content %}
 
-{% block content %}
-
-<div class="header pb-6 d-flex align-items-center" 
-     style="min-height: 500px; background-image: url(/static/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
-  <!-- Mask -->
-  <span class="mask bg-gradient-default opacity-8"></span>
-  <!-- Header container -->
-  <div class="container-fluid d-flex align-items-center">
-    <div class="row">
-      <div class="col-lg-7 col-md-10">
-        <h1 class="display-2 text-white"> 
-          Hello {{ request.user.username }}
-        </h1>
-        <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
-        <a href="#!" class="btn btn-neutral">Edit profile</a>
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center">
+        <div class="col">
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+              <li class="breadcrumb-item">
+                <a href="/"><i class="fas fa-home"></i></a>
+              </li>
+              <li class="breadcrumb-item"><a href="/people.html">People</a></li>
+              <li class="breadcrumb-item active" aria-current="page">
+                {{ person.name }}
+              </li>
+            </ol>
+          </nav>
+        </div>
       </div>
     </div>
   </div>
@@ -26,20 +43,27 @@
   <div class="row">
     <div class="col-xl-4 order-xl-2">
       <div class="card card-profile">
-        <img src="/static/assets/img/theme/img-1-1000x600.jpg" alt="Image placeholder" class="card-img-top">
+        <img
+          src="/static/assets/img/theme/img-1-1000x600.jpg"
+          alt="Image placeholder"
+          class="card-img-top"
+        />
         <div class="row justify-content-center">
           <div class="col-lg-3 order-lg-2">
             <div class="card-profile-image">
-              <a href="#">
-                <img src="/static/assets/img/theme/team-4.jpg" class="rounded-circle">
-              </a>
+              <img
+                src="{{ person.image }}"
+                class="profile-image rounded-circle"
+              />
             </div>
           </div>
         </div>
         <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
           <div class="d-flex justify-content-between">
-            <a href="#" class="btn btn-sm btn-info  mr-4 ">Connect</a>
-            <a href="#" class="btn btn-sm btn-default float-right">Message</a>
+            <a href="#publications" class="btn btn-sm btn-primary mr-4"
+              >Publications</a
+            >
+            <a href="#" class="btn btn-sm btn-info">Contact</a>
           </div>
         </div>
         <div class="card-body pt-0">
@@ -47,135 +71,83 @@
             <div class="col">
               <div class="card-profile-stats d-flex justify-content-center">
                 <div>
-                  <span class="heading">22</span>
-                  <span class="description">Friends</span>
+                  <span class="heading">{{ person.publications }}</span>
+                  <span class="description">Publications</span>
                 </div>
                 <div>
-                  <span class="heading">10</span>
-                  <span class="description">Photos</span>
+                  <span class="heading">{{ person.citations }}</span>
+                  <span class="description">Citations</span>
                 </div>
                 <div>
-                  <span class="heading">89</span>
-                  <span class="description">Comments</span>
+                  <span class="heading">{{ person.projects }}</span>
+                  <span class="description">Projects</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="text-center">
-            <h5 class="h3">
-              {{ request.user.username }}
-            </h5>
+            <h3>{{ person.name }}</h3>
             <div class="h5 font-weight-300">
-              {{ request.user.email }}
+              <i class="ni location_pin mr-2"></i>{{ person.role }}
             </div>
             <div class="h5 mt-4">
-              <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-            </div>
-            <div>
-              <i class="ni education_hat mr-2"></i>University of Computer Science
+              <i class="ni business_briefcase-24 mr-2"></i>{{ person.department
+              }}
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="col-xl-8 order-xl-1">
-      <div class="card">
-        <div class="card-header">
+      <div class="card shadow">
+        <div class="card-header bg-white border-0">
           <div class="row align-items-center">
             <div class="col-8">
-              <h3 class="mb-0">Edit profile </h3>
-            </div>
-            <div class="col-4 text-right">
-              <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+              <h3 class="mb-0">Profile</h3>
             </div>
           </div>
         </div>
         <div class="card-body">
-          <form>
-            <h6 class="heading-small text-muted mb-4">User information</h6>
+          <div>
+            <h6 class="heading-small text-muted mb-4">About</h6>
             <div class="pl-lg-4">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-username">Username</label>
-                    <input type="text" id="input-username" class="form-control" placeholder="Username" value="{{ request.user.username }}">
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-email">Email address</label>
-                    <input type="email" id="input-email" class="form-control" placeholder="{{ request.user.email }}">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-first-name">First name</label>
-                    <input type="text" id="input-first-name" class="form-control" placeholder="First name" value="Lucky">
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-last-name">Last name</label>
-                    <input type="text" id="input-last-name" class="form-control" placeholder="Last name" value="Jesse">
-                  </div>
-                </div>
-              </div>
+              <p class="text-muted mb-4">{{ person.bio }}</p>
             </div>
-            <hr class="my-4" />
-            <!-- Address -->
-            <h6 class="heading-small text-muted mb-4">Contact information</h6>
+          </div>
+          <hr class="my-4" />
+          <div>
+            <h6 class="heading-small text-muted mb-4">Research Interests</h6>
             <div class="pl-lg-4">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-address">Address</label>
-                    <input id="input-address" class="form-control" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09" type="text">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-city">City</label>
-                    <input type="text" id="input-city" class="form-control" placeholder="City" value="New York">
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-country">Country</label>
-                    <input type="text" id="input-country" class="form-control" placeholder="Country" value="United States">
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-country">Postal code</label>
-                    <input type="number" id="input-postal-code" class="form-control" placeholder="Postal code">
-                  </div>
-                </div>
-              </div>
+              {% for interest in person.interests %}
+              <span class="badge badge-pill badge-primary">{{ interest }}</span>
+              {% endfor %}
             </div>
-            <hr class="my-4" />
-            <!-- Description -->
-            <h6 class="heading-small text-muted mb-4">About me</h6>
+          </div>
+          <hr class="my-4" />
+          <div id="publications">
+            <h6 class="heading-small text-muted mb-4">Recent Publications</h6>
             <div class="pl-lg-4">
-              <div class="form-group">
-                <label class="form-control-label">About Me</label>
-                <textarea rows="4" class="form-control" placeholder="A few words about you ...">A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea>
+              {% for pub in person.recent_publications %}
+              <div class="card mb-3">
+                <div class="card-body py-3">
+                  <h5 class="card-title h6 mb-1">{{ pub.title }}</h5>
+                  <p class="card-text small text-muted mb-0">
+                    {{ pub.journal }} ({{ pub.year }})
+                  </p>
+                </div>
               </div>
+              {% endfor %}
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   {% include "includes/footer.html" %}
-
 </div>
 
 {% endblock content %}
 
-<!-- Specific JS goes HERE --> 
+<!-- Specific JS goes HERE -->
 {% block javascripts %}{% endblock javascripts %}
