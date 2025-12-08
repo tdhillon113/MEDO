@@ -1,32 +1,70 @@
 <!--
-MODIFIED: Added interactive cell visualization form
-- Form with cell type selector (square/honeycomb)
-- Input fields: lattice_constant, marker_size, line_width
-- Shows visualization only after form submission (if cell image..)
-- Displays single selected cell type instead of both
+Interactive Cell Visualization Tool
+Explore lattice structures for multilayer devices
 -->
 {% extends "layouts/base.html" %}
 
 {% block title %} Cell Visualization {% endblock %}
+
+{% block stylesheets %}
+<style>
+  .lattice-card {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+  }
+
+  .lattice-card:hover {
+    border-color: #5e72e4;
+    transform: translateY(-5px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  .lattice-card.selected {
+    border-color: #5e72e4;
+    background-color: #f7fafc;
+  }
+
+  .info-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    padding: 2rem;
+    color: white;
+    margin-bottom: 2rem;
+  }
+
+  .parameter-card {
+    background: #f8f9fe;
+    border-radius: 8px;
+    padding: 1.5rem;
+    height: 100%;
+  }
+
+  .icon-shape-primary {
+    background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%);
+  }
+
+  .visualization-result {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+  }
+</style>
+{% endblock stylesheets %}
 
 {% block content %}
 
 <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
   <div class="container-fluid">
     <div class="header-body">
-      <!-- Card stats -->
-      <div class="row">
-        <div class="col-12">
-          <div class="card shadow">
-            <div class="card-header bg-transparent">
-              <div class="row align-items-center">
-                <div class="col">
-                  <h6 class="text-uppercase text-muted ls-1 mb-1">Visualization</h6>
-                  <h2 class="mb-0">Cell Structures</h2>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="row align-items-center mb-4">
+        <div class="col">
+          <h2 class="display-3 text-white mb-0">
+            <i class="ni ni-atom text-white mr-2"></i>
+            Interactive Cell Visualization
+          </h2>
+          <p class="text-white lead mt-2">Explore lattice structures for multilayer quantum devices</p>
         </div>
       </div>
     </div>
@@ -35,59 +73,131 @@ MODIFIED: Added interactive cell visualization form
 
 <!-- Page content -->
 <div class="container-fluid mt--7">
-  <!-- Input Form -->
-  <div class="row">
+
+  <!-- About Section -->
+  <div class="row mb-4">
     <div class="col-12">
-      <div class="card shadow mb-4">
+      <div class="info-box">
+        <h3 class="text-white mb-3">
+          About This Tool
+        </h3>
+        <p class="text-white mb-3">
+          Multilayer quantum devices, such as twisted bilayers, are cutting-edge platforms for exploring exotic electronic states
+          like Wigner crystals and excitonic phases. This tool helps visualize the atomic lattice structures that form these
+          remarkable materials.
+        </p>
+        <p class="text-white mb-0">
+          <strong>Key Applications:</strong> By adjusting cell parameters, you can explore how electron configurations optimize
+          within different lattice geometries. This is crucial for studying systems with defects (vacancies and interstitials)
+          and understanding electron-hole interactions in bilayer systems. Our computational approach leverages modern machine
+          learning frameworks to make these complex calculations accessible to both experimentalists and theorists.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lattice Type Selection -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h3 class="mb-3">
+        Choose Your Lattice Structure
+      </h3>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card lattice-card h-100 {% if cell_type == 'square' %}selected{% endif %}" onclick="selectLattice('square')">
+        <div class="card-body">
+          <h4 class="card-title mb-1">Square Lattice</h4>
+          <p class="text-sm text-muted mb-2">Perpendicular axes • Equal spacing • 90° angles</p>
+          <p class="mt-3 mb-0">
+            The simplest 2D lattice with perpendicular axes of equal length. Common in oxide materials and
+            certain transition metal dichalcogenides. Ideal for modeling commensurate systems with integer fillings.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card lattice-card h-100 {% if cell_type == 'honeycomb' %}selected{% endif %}" onclick="selectLattice('honeycomb')">
+        <div class="card-body">
+          <h4 class="card-title mb-1">Honeycomb Lattice</h4>
+          <p class="text-sm text-muted mb-2">Hexagonal structure • 60° angles • Two sublattices</p>
+          <p class="mt-3 mb-0">
+            Characteristic of graphene and TMD monolayers like WSe₂. Features two inequivalent sublattices,
+            enabling study of exotic phases and Moiré patterns in twisted bilayers.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parameter Controls -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow">
         <div class="card-header bg-transparent">
-          <div class="row align-items-center">
-            <div class="col">
-              <h3 class="mb-0">Generate Cell Visualization</h3>
-            </div>
-          </div>
+          <h3 class="mb-0">
+            Adjust Parameters
+          </h3>
         </div>
         <div class="card-body">
-          <form method="POST" action="{% url 'cells' %}">
+          <form method="POST" action="{% url 'cells' %}" id="cellForm">
             {% csrf_token %}
+            <input type="hidden" id="cell_type" name="cell_type" value="{{ cell_type|default:'square' }}">
+
             <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-control-label" for="cell_type">Cell Type</label>
-                  <select class="form-control" id="cell_type" name="cell_type" required>
-                    <option value="square" {% if cell_type == 'square' %}selected{% endif %}>Square Cell</option>
-                    <option value="honeycomb" {% if cell_type == 'honeycomb' %}selected{% endif %}>Honeycomb Cell</option>
-                  </select>
+              <div class="col-md-4 mb-3">
+                <div class="parameter-card">
+                  <label class="form-control-label font-weight-bold" for="lattice_constant">
+                    Lattice Constant (a)
+                  </label>
+                  <input type="range" class="form-control-range mt-2" id="lattice_constant_range"
+                         min="0.1" max="5" step="0.1" value="{{ lattice_constant|default:'1.0' }}"
+                         oninput="updateValue('lattice_constant', this.value)">
+                  <input type="number" class="form-control mt-2" id="lattice_constant" name="lattice_constant"
+                         step="0.1" min="0.1" max="5" value="{{ lattice_constant|default:'1.0' }}" required
+                         oninput="updateRange('lattice_constant_range', this.value)">
+                  <small class="form-text text-muted">Controls unit cell size and spacing between atoms</small>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-control-label" for="lattice_constant">Lattice Constant (a)</label>
-                  <input type="number" class="form-control" id="lattice_constant" name="lattice_constant" 
-                         step="0.1" min="0.1" max="10" value="{{ lattice_constant|default:'1.0' }}" required>
-                  <small class="form-text text-muted">Size of the unit cell (0.1 - 10)</small>
+
+              <div class="col-md-4 mb-3">
+                <div class="parameter-card">
+                  <label class="form-control-label font-weight-bold" for="marker_size">
+                    Marker Size
+                  </label>
+                  <input type="range" class="form-control-range mt-2" id="marker_size_range"
+                         min="1" max="50" step="1" value="{{ marker_size|default:'10' }}"
+                         oninput="updateValue('marker_size', this.value)">
+                  <input type="number" class="form-control mt-2" id="marker_size" name="marker_size"
+                         step="1" min="1" max="50" value="{{ marker_size|default:'10' }}" required
+                         oninput="updateRange('marker_size_range', this.value)">
+                  <small class="form-text text-muted">Visual size of atoms/lattice points</small>
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <div class="parameter-card">
+                  <label class="form-control-label font-weight-bold" for="line_width">
+                    Line Width
+                  </label>
+                  <input type="range" class="form-control-range mt-2" id="line_width_range"
+                         min="0.5" max="10" step="0.5" value="{{ line_width|default:'2' }}"
+                         oninput="updateValue('line_width', this.value)">
+                  <input type="number" class="form-control mt-2" id="line_width" name="line_width"
+                         step="0.5" min="0.5" max="10" value="{{ line_width|default:'2' }}" required
+                         oninput="updateRange('line_width_range', this.value)">
+                  <small class="form-text text-muted">Thickness of bonds connecting atoms</small>
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-control-label" for="marker_size">Marker Size</label>
-                  <input type="number" class="form-control" id="marker_size" name="marker_size" 
-                         step="1" min="1" max="50" value="{{ marker_size|default:'10' }}" required>
-                  <small class="form-text text-muted">Size of atoms/points (1 - 50)</small>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-control-label" for="line_width">Line Width</label>
-                  <input type="number" class="form-control" id="line_width" name="line_width" 
-                         step="0.5" min="0.5" max="10" value="{{ line_width|default:'2' }}" required>
-                  <small class="form-text text-muted">Width of cell edges (0.5 - 10)</small>
-                </div>
-              </div>
-            </div>
-            <div class="text-right">
-              <button type="submit" class="btn btn-primary">Generate Visualization</button>
+
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary btn-lg">
+                Generate Visualization
+              </button>
             </div>
           </form>
         </div>
@@ -95,43 +205,81 @@ MODIFIED: Added interactive cell visualization form
     </div>
   </div>
 
-  <!-- {% if cell_image %} -->
-  <div class="row mt-5">
+  <!-- Visualization Result -->
+  {% if cell_image %}
+  <div class="row">
     <div class="col-12">
       <div class="card shadow">
-        <div class="card-header border-0">
-          <div class="row align-items-center">
-            <div class="col">
-              <h3 class="mb-0">{% if cell_type == 'square' %}Square Cell{% else %}Honeycomb Cell{% endif %}</h3>
+        <div class="card-body p-4">
+          <div class="visualization-result">
+            <div class="text-center mb-4">
+              <img src="data:image/png;base64,{{ cell_image }}"
+                   alt="{% if cell_type == 'square' %}Square Lattice{% else %}Honeycomb Lattice{% endif %}"
+                   class="img-fluid"
+                   style="max-width: 100%; height: auto; border-radius: 10px;">
             </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="text-center">
-            <img src="data:image/png;base64,{{ cell_image }}" alt="{% if cell_type == 'square' %}Square Cell{% else %}Honeycomb Cell{% endif %}" class="img-fluid" style="max-width: 100%; height: auto;">
-          </div>
-          <div class="mt-4">
-            <p class="text-sm mb-0 text-muted">
-              <!-- {% if cell_type == 'square' %}
-                A square cell represents the simplest 2D lattice structure with perpendicular axes of equal length.
-              {% else %}
-                A honeycomb cell demonstrates a hexagonal lattice structure with 60° angles between axes.
-              {% endif %} -->
-            </p>
+
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; padding: 2rem; color: white;">
+              <h4 class="text-white mb-3">Understanding Your Visualization</h4>
+              <p class="text-white mb-3">
+                {% if cell_type == 'square' %}
+                <strong>Square Lattice:</strong> This structure shows a simple cubic arrangement where atoms sit at 90° to each other.
+                The lattice constant (a={{ lattice_constant }}) determines the spacing between neighboring atoms. This type of lattice
+                is found in certain oxide materials and is useful for modeling electron configurations at commensurate (integer) fillings.
+                {% else %}
+                <strong>Honeycomb Lattice:</strong> This hexagonal structure is characteristic of materials like graphene and transition
+                metal dichalcogenides (TMDs) such as WSe₂. The two sublattices allow for rich physics including Dirac cones and
+                topological phases. When two layers are twisted, Moiré patterns emerge that enable exotic quantum states.
+                {% endif %}
+              </p>
+              <p class="text-white mb-0">
+                <strong>Applications in Research:</strong> These visualizations help understand how electrons optimize their positions
+                in 2D materials, crucial for studying quantum phenomena like Wigner crystallization and superconductivity in twisted bilayers.
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   {% endif %}
+
 </div>
 
 {% endblock content %}
 
 {% block javascripts %}
 <script>
-  $(document).ready(function() {
-    // Add any required JavaScript initialization here
+  // Lattice selection handler
+  function selectLattice(type) {
+    document.getElementById('cell_type').value = type;
+
+    // Update visual selection
+    document.querySelectorAll('.lattice-card').forEach(card => {
+      card.classList.remove('selected');
+    });
+    event.currentTarget.classList.add('selected');
+  }
+
+  // Sync range sliders with number inputs
+  function updateValue(inputId, value) {
+    document.getElementById(inputId).value = value;
+  }
+
+  function updateRange(rangeId, value) {
+    document.getElementById(rangeId).value = value;
+  }
+
+  // Smooth scroll to visualization on form submit
+  document.getElementById('cellForm').addEventListener('submit', function() {
+    setTimeout(function() {
+      if (document.querySelector('.visualization-result')) {
+        document.querySelector('.visualization-result').scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+    }, 100);
   });
 </script>
 {% endblock javascripts %}

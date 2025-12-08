@@ -87,10 +87,11 @@
                 <div class="col ml--2">
                   <h4 class="contributor-name">{{ person.name }}</h4>
                   <div class="contributor-role">{{ person.role }} | {{ person.department }}</div>
+                  <p class="text-muted mt-2 mb-2">{{ person.bio|truncatewords:25 }}</p>
                   <div class="contributor-stats mt-2">
-                    <span><i class="ni ni-books-2"></i>{{ person.publications }} Publications</span>
-                    <span><i class="ni ni-chart-bar-32"></i>{{ person.citations }} Citations</span>
-                    <span><i class="ni ni-collection"></i>{{ person.projects }} Projects</span>
+                    <span><i class="ni ni-books"></i> {{ person.publications }} Publications</span>
+                    <span><i class="ni ni-chart-bar-32"></i> {{ person.citations }} Citations</span>
+                    <span><i class="ni ni-collection"></i> {{ person.projects }} Projects</span>
                   </div>
                 </div>
               </div>
