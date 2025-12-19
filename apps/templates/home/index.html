@@ -24,16 +24,16 @@
   
   /* Controls styling moved below progress bars */
   .research-carousel-controls .btn-arrow {
-    background-color: rgba(255,255,255,0.06);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.12);
+    background-color: #FEB612;
+    color: #FFFFFF;
+    border: 1px solid #FEB612;
     padding: 0.5rem 1rem;
     border-radius: 30px;
     min-width: 90px;
   }
   .research-carousel-controls .btn-arrow:hover {
-    background-color: rgba(255,255,255,0.14);
-    color: #fff;
+    background-color: #e5a410;
+    color: #FFFFFF;
   }
   .research-carousel-controls .btn-arrow i {
     margin: 0 0.35rem;
@@ -49,17 +49,66 @@
   /* Explore Tool Button Styles */
   .btn-explore-tool {
     background-color: transparent;
-    color: #fff;
+    color: #0B1E73;
     border: none;
     padding: 0.5rem 1.5rem;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
   }
 
   .btn-explore-tool:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
+    background-color: transparent;
+    color: #0B1E73;
+    text-decoration: underline;
+  }
+
+  /* Research Opportunities Hover Accordion */
+  .accordion .card {
+    border: none;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .accordion .card-header {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 0;
+  }
+
+  .accordion .card-header:hover {
+    background-color: rgba(11, 30, 115, 0.05);
+  }
+
+  .accordion .btn-link {
+    color: #0B1E73 !important;
     text-decoration: none;
+    font-weight: 500;
+    pointer-events: none;
+  }
+
+  .accordion .btn-link::after {
+    display: none !important; /* Hide the default arrow */
+  }
+
+  .accordion .collapse {
+    display: block !important;
+    height: auto !important;
+  }
+
+  .accordion .card-body {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  }
+
+  .accordion .card:hover .card-body {
+    max-height: 200px;
+    opacity: 1;
+    padding-top: 0.5rem;
   }
 
   /* Original styles below */
@@ -69,7 +118,7 @@
 
 {% block content %}
 
-    <div class="header bg-primary pb-4"/>
+    <div class="header pb-4" style="background-color: #0B1E73;"/>
       <div class="container-fluid">
         <div class="header-body">
           <div class="row align-items-center py-4">
@@ -79,15 +128,15 @@
     </div>
 
     <!-- Page content -->
-    <div class="container-fluid mt--6">
+    <div class="container-fluid" style="margin-top: 2rem;">
       <div class="row">
         <div class="col-lg-8 col-xl-8 mb-4 mb-xl-0">
-          <div class="card bg-default">
+          <div class="card" style="background-color: white;">
             <div class="card-header bg-transparent">
               <div class="row align-items-center">
                 <div class="col">
-                  <h6 class="text-light text-uppercase ls-1 mb-1">Current Research</h6>
-                  <h5 class="h3 text-white mb-0">Featured Topics</h5>
+                  <h6 class="text-dark text-uppercase ls-1 mb-1">Current Research</h6>
+                  <h5 class="h3 text-dark mb-0">Featured Topics</h5>
                 </div>
               </div>
             </div>
@@ -97,18 +146,18 @@
                 <div class="carousel-inner">
                   <!-- Topic 1 -->
                   <div class="carousel-item active">
-                    <div class="research-topic text-white">
+                    <div class="research-topic" style="color: #32325d;">
                       <div class="row align-items-center">
                         <div class="col-md-3 text-center mb-3 mb-md-0">
                           <img src="/static/assets/img/theme/emilia.png" alt="Emilia Szynwald" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid rgba(255,255,255,0.3);">
                           <p class="mt-2 mb-0 text-sm">Emilia Szynwald</p>
                         </div>
                         <div class="col-md-9">
-                          <h3 class="text-white font-weight-bold font-italic">Modeling Charged Multilayer Devices with Defects Using JAX</h3>
-                          <p class="lead">Explore lattice structures for multilayer quantum devices such as twisted bilayers, which are cutting-edge platforms for studying exotic electronic states like Wigner crystals and excitonic phases. This tool helps visualize atomic lattice structures and understand how electrons optimize within different geometries.</p>
-                          <div class="mt-3">
+                          <h3 class="font-weight-bold font-italic" style="color: #32325d;">Modeling Charged Multilayer Devices with Defects Using JAX</h3>
+                          <p class="lead" style="color: #525f7f;">Explore lattice structures for multilayer quantum devices such as twisted bilayers, which are cutting-edge platforms for studying exotic electronic states like Wigner crystals and excitonic phases. This tool helps visualize atomic lattice structures and understand how electrons optimize within different geometries.</p>
+                          <div class="mt-3 text-center">
                             <a href="{% url 'cells' %}" class="btn btn-explore-tool" style="font-size: 1.1rem;">
-                              <i class="ni ni-atom mr-2"></i>Explore Interactive Tool
+                              Explore Interactive Tool
                             </a>
                           </div>
                         </div>
@@ -117,26 +166,32 @@
                   </div>
                   <!-- Topic 2 -->
                   <div class="carousel-item">
-                    <div class="research-topic text-white">
-                      <h3>Project 2</h3>
-                      <p class="lead">Placeholder summary here</p>
-                    </div>
-                  </div>
-                  <!-- Topic 3 -->
-                  <div class="carousel-item">
-                    <div class="research-topic text-white">
-                      <h3>Computational Biology</h3>
-                      <p class="lead">Modeling biological systems and protein folding predictions.</p>
+                    <div class="research-topic" style="color: #32325d;">
+                      <div class="row align-items-center">
+                        <div class="col-md-3 text-center mb-3 mb-md-0">
+                          <img src="/static/assets/img/theme/cameron.png" alt="Cameron Getner" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid rgba(255,255,255,0.3);">
+                          <p class="mt-2 mb-0 text-sm">Cameron Getner</p>
+                        </div>
+                        <div class="col-md-9">
+                          <h3 class="font-weight-bold font-italic" style="color: #32325d;">DFT Simulations of Moiré Superlattices: Quantum Phase Transitions</h3>
+                          <p class="lead" style="color: #525f7f;">Using Density Functional Theory to simulate electrons in moiré superlattices, we observe exotic quantum behaviors. Our research investigates two competing phases—trimer and honeycomb—and explores how an emergent Dirac cone in the band structure may drive transitions between these phases.</p>
+                          <div class="mt-3 text-center">
+                            <a href="{% url 'cameron_research' %}" class="btn btn-explore-tool" style="font-size: 1.1rem;">
+                              Explore Research
+                            </a>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               <!-- Controls positioned below research progress -->
               <div class="text-center mt-3 research-carousel-controls">
-                <button class="btn btn-sm btn-outline-light btn-arrow mr-2" data-target="#researchCarousel" data-slide="prev" aria-label="Previous">
+                <button class="btn btn-sm btn-arrow mr-2" data-target="#researchCarousel" data-slide="prev" aria-label="Previous">
                   <i class="fas fa-chevron-left"></i>&nbsp;Prev
                 </button>
-                <button class="btn btn-sm btn-outline-light btn-arrow ml-2" data-target="#researchCarousel" data-slide="next" aria-label="Next">
+                <button class="btn btn-sm btn-arrow ml-2" data-target="#researchCarousel" data-slide="next" aria-label="Next">
                   Next&nbsp;<i class="fas fa-chevron-right"></i>
                 </button>
               </div>
@@ -148,8 +203,8 @@
             <div class="card-header bg-transparent">
               <div class="row align-items-center">
                 <div class="col">
-                  <h6 class="text-uppercase text-muted ls-1 mb-1">Research Opportunities</h6>
-                  <h5 class="h3 mb-0">Potential Projects</h5>
+                  <h6 class="text-uppercase ls-1 mb-1" style="color: #0B1E73;">Research Opportunities</h6>
+                  <h5 class="h3 mb-0" style="color: #0B1E73;">Potential Projects</h5>
                 </div>
               </div>
             </div>
@@ -164,7 +219,7 @@
                       </button>
                     </h2>
                   </div>
-                  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#projectAccordion">
+                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#projectAccordion">
                     <div class="card-body pt-0">
                       <p class="text-sm mb-0">Interactive visualization tools for quantum computing concepts.</p>
                     </div>
@@ -205,7 +260,7 @@
               </div>
               <!-- Learn More Button -->
               <div class="text-center mt-3">
-                <a href="#" class="btn btn-sm btn-primary">View All Projects</a>
+                <!-- <a href="#" class="btn btn-sm btn-primary">View All Projects</a> -->
               </div>
             </div>
           </div>
@@ -218,10 +273,15 @@
 
 {% endblock content %}
 
-<!-- Specific JS goes HERE --> 
+<!-- Specific JS goes HERE -->
 {% block javascripts %}
 
   <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
   <script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+
+  <script>
+    // Hover accordion functionality - now handled by CSS
+    // Pure CSS hover effect for accordion items
+  </script>
 
 {% endblock javascripts %}
