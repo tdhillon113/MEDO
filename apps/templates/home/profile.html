@@ -17,36 +17,21 @@
 </style>
 {% endblock stylesheets %} {% block content %}
 
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+<div class="header pb-4 pt-3" style="background-color: #0B1E73;">
   <div class="container-fluid">
     <div class="header-body">
-      <div class="row align-items-center">
-        <div class="col">
-          <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-              <li class="breadcrumb-item">
-                <a href="/"><i class="fas fa-home"></i></a>
-              </li>
-              <li class="breadcrumb-item"><a href="{% url 'people' %}">People</a></li>
-              <li class="breadcrumb-item active" aria-current="page">
-                {{ person.name }}
-              </li>
-            </ol>
-          </nav>
-        </div>
-      </div>
     </div>
   </div>
 </div>
 <!-- Page content -->
-<div class="container-fluid mt--6">
+<div class="container-fluid mt--2">
   <div class="row">
     <div class="col-xl-12">
       <div class="card shadow">
         <div class="card-header bg-white border-0">
           <div class="row align-items-center">
             <div class="col-8">
-              <h3 class="mb-0">Profile</h3>
+              <!-- <h3 class="mb-0">Profile</h3> -->
             </div>
           </div>
         </div>
@@ -81,22 +66,6 @@
             </div>
           </div>
           <hr class="my-4" />
-          <div id="publications">
-            <h6 class="heading-small text-muted mb-4">Recent Publications</h6>
-            <div class="pl-lg-4">
-              {% for pub in person.recent_publications %}
-              <div class="card mb-3">
-                <div class="card-body py-3">
-                  <h5 class="card-title h6 mb-1">{{ pub.title }}</h5>
-                  <p class="card-text small text-muted mb-0">
-                    {{ pub.journal }} ({{ pub.year }})
-                  </p>
-                </div>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          <hr class="my-4" />
           <div id="contact">
             <h6 class="heading-small text-muted mb-4">Contact</h6>
             <div class="pl-lg-4">
@@ -107,12 +76,12 @@
                     <a href="mailto:{{ person.email }}" class="ml-2">{{ person.email }}</a>
                   </div>
                   <div class="mb-3">
-                    <strong><i class="ni ni-mobile-button mr-2"></i>Phone:</strong>
-                    <span class="ml-2">{{ person.phone }}</span>
+                    <!-- <strong><i class="ni ni-mobile-button mr-2"></i>Phone:</strong>
+                    <span class="ml-2">{{ person.phone }}</span> -->
                   </div>
                   <div class="mb-3">
-                    <strong><i class="ni ni-pin-3 mr-2"></i>Office:</strong>
-                    <span class="ml-2">{{ person.office }}</span>
+                    <!-- <strong><i class="ni ni-pin-3 mr-2"></i>Office:</strong>
+                    <span class="ml-2">{{ person.office }}</span> -->
                   </div>
                 </div>
               </div>
