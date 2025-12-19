@@ -19,103 +19,54 @@ CONTRIBUTORS = {
         'publications': 3,
         'citations': 8,
         'projects': 5,
-        'email': 'paul.yang@university.edu',
-        'phone': '+1 (555) 123-4567',
-        'office': 'Physics Building, Room 301',
-        'interests': ['Quantum Computing', 'Materials Science', 'Computational Physics', 'Quantum Simulation'],
-        'recent_publications': [
-            {
-                'title': 'Quantum Computing Applications in Materials Science',
-                'journal': 'Nature Physics',
-                'year': '2025'
-            },
-            {
-                'title': 'Novel Approaches to Quantum Simulation',
-                'journal': 'Physical Review Letters',
-                'year': '2024'
-            },
-            {
-                'title': 'Machine Learning for Quantum State Preparation',
-                'journal': 'Quantum',
-                'year': '2024'
-            }
-        ],
+        'email': 'Paul.Yang@hofstra.edu',
+        # 'phone': '+1 (555) 123-4567',
+        'Website': 'https://paul-st-young.github.io/cv/',
+        'interests': ['Quantum Computing', 'Materials Science', 'Computational Physics'],
+       
         'current_work': [
-            'Developing quantum algorithms for materials discovery',
-            'Building open-source quantum simulation frameworks',
-            'Collaborating on quantum machine learning applications'
+            # 'Developing quantum algorithms for materials discovery',
+            # 'Building open-source quantum simulation frameworks',
+            # 'Collaborating on quantum machine learning applications'
         ]
     },
     'emilia-szynwald': {
         'name': 'Emilia Szynwald',
-        'role': 'Graduate Research Student',
+        'role': 'Undergraduate Research Student',
         'department': 'Department of Computer Science',
         'image': '/static/assets/img/theme/emilia.png',
-        'bio': 'Emilia specializes in molecular modeling and machine learning. Her research combines cutting-edge ML techniques with traditional computational chemistry methods to predict molecular properties and accelerate drug discovery.',
-        'publications': 12,
-        'citations': 350,
-        'projects': 8,
-        'email': 'emilia.szynwald@university.edu',
-        'phone': '+1 (555) 234-5678',
-        'office': 'Computer Science Building, Room 215',
-        'interests': ['Computational Chemistry', 'Machine Learning', 'Molecular Dynamics', 'Drug Discovery'],
+        'bio': 'Emilia specializes in Computer Science and machine learning. Her research combines cutting-edge ML techniques with traditional computational physics methods to predict molecular properties and accelerate elemental physics discorveries.',
+      
+        'email': 'ESzynwald1@pride.hofstra.edu',
+     
+
+        'interests': ['Computational Physics', 'Machine Learning', 'Quantum Physics'],
         'recent_publications': [
-            {
-                'title': 'Machine Learning for Molecular Property Prediction',
-                'journal': 'Journal of Chemical Information and Modeling',
-                'year': '2025'
-            },
-            {
-                'title': 'Neural Networks in Chemical Space Exploration',
-                'journal': 'Chemical Science',
-                'year': '2024'
-            },
-            {
-                'title': 'Deep Learning for Protein-Ligand Interactions',
-                'journal': 'ACS Central Science',
-                'year': '2024'
-            }
+            
         ],
         'current_work': [
-            'Developing ML models for predicting drug-target interactions',
-            'Creating interactive visualizations for molecular simulations',
-            'Building datasets for computational chemistry research'
+            'Modeling Charged Multilayer Devices with Defects Using JAX',
         ]
     },
     'cameron getner': {
         'name': 'Cameron Getner',
         'role': 'Undergraduate Research Student',
-        'department': 'Department of Physics',
+
         'image': '/static/assets/img/theme/cameron.png',
         'bio': 'Cameron is a talented undergraduate researcher specializing in computational physics and scientific visualization. Her work focuses on creating interactive tools and simulations that make complex physics concepts more accessible to students and researchers.',
         # 'publications': 0,
         # 'citations': 0,
-        'projects': 1,
-        'email': 'cameron.getner@hofstra.edu',
-        'phone': 'placeholder',
+        # 'projects': 1,
+        'email': 'MBogartGetner1@pride.hofstra.edu',
+        # 'phone': 'placeholder',
         # 'office': 'Physics Building, Room 412',
-        'interests': ['Computational Physics', 'Scientific Visualization'],
+        'interests': ['Computational Physics', ],
         'recent_publications': [
-            {
-                'title': 'Interactive Visualization Tools for Quantum Mechanics Education',
-                'journal': 'Journal of Physics Education',
-                'year': '2025'
-            },
-            {
-                'title': 'Web-Based Simulation Framework for Physics Demonstrations',
-                'journal': 'Computer Physics Communications',
-                'year': '2024'
-            },
-            {
-                'title': 'Real-Time Lattice Structure Visualization in Browser',
-                'journal': 'Journal of Computational Physics',
-                'year': '2024'
-            }
+          
         ],
         'current_work': [
-            'Building interactive cell visualization tools for materials science',
-            'Developing web-based physics simulation platform',
-            'Creating educational resources for quantum computing concepts'
+            
+            'Using DFT to simulate electrons in moiré superlattices'
         ]
     }
 }
@@ -168,6 +119,16 @@ def cells(request):
         'line_width': line_width,
     }
     html_template = loader.get_template('home/cells.html')
+    return HttpResponse(html_template.render(context, request))
+
+def cameron_research(request):
+    """
+    Cameron Getner's research page on DFT simulations of moiré superlattices
+    """
+    context = {
+        'segment': 'cameron_research'
+    }
+    html_template = loader.get_template('home/cameron_research.html')
     return HttpResponse(html_template.render(context, request))
 
 def people(request):
