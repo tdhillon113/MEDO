@@ -12,6 +12,9 @@ urlpatterns = [
     # Cell visualization page
     path('cells/', views.cells, name='cells'),
 
+    # Cameron's research page
+    path('cameron-research/', views.cameron_research, name='cameron_research'),
+
     # People pages
     path('people/', views.people, name='people'),
     path('people.html', RedirectView.as_view(url='/people/', permanent=False)),
