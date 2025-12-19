@@ -1,8 +1,8 @@
 <!-- Top navigation bar: Logo, menu links (Home, People, Ideas, Cells) -->
-<nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+<nav class="navbar navbar-top navbar-expand navbar-dark border-bottom" style="background-color: #FEB612;">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
-      <h1 class="text-white font-weight-bold mb-0" style="font-size: 2.5rem;">MEDO</h1>
+      <h1 class="font-weight-bold mb-0" style="font-size: 3rem; color: #0B1E73;">MEDO</h1>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -11,16 +11,19 @@
       <!-- Navbar links -->
       <ul class="navbar-nav align-items-center ml-auto">
         <li class="nav-item">
-          <a class="nav-link text-white" href="/">Home</a>
+          <a class="nav-link" style="color: #0B1E73;" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="/people.html">People</a>
+          <a class="nav-link" style="color: #0B1E73;" href="/people.html">People</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="/ideas.html">Ideas</a>
+          <a class="nav-link" style="color: #0B1E73;" href="/ideas.html">Ideas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="/cells/">Cells</a>
+          <a class="nav-link" style="color: #0B1E73;" href="/cells/">Cells</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: #0B1E73;" href="{% url 'cameron_research' %}">DFT Simulation</a>
         </li>
       </ul>
     </div>
