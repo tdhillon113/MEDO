@@ -9,7 +9,7 @@
     width: 120px;
     height: 120px;
     object-fit: cover;
-    border: 3px solid #fff;
+    border: 3px solid #0B1E73;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     transition: transform 0.2s ease;
   }
@@ -55,26 +55,12 @@
 {% endblock stylesheets %}
 
 {% block content %}
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
-  <div class="container-fluid">
-    <div class="header-body">
-      <div class="row">
-        <div class="col">
-          <h2 class="display-3 text-white">Our People</h2>
-          <p class="text-white lead">Meet the researchers and contributors who are advancing the frontiers of science.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="header pb-1 pt-5 pt-md-8" style="background-color: #0B1E73;"/>
 
 <div class="container-fluid mt--7">
   <div class="row">
     <div class="col-12">
       <div class="card shadow">
-        <div class="card-header border-0">
-          <h3 class="mb-0">Contributors</h3>
-        </div>
         <div class="card-body">
           <!-- Contributors list with avatars -->
           <div class="list-group">
@@ -87,11 +73,7 @@
                 <div class="col ml--2">
                   <h4 class="contributor-name">{{ person.name }}</h4>
                   <div class="contributor-role">{{ person.role }} | {{ person.department }}</div>
-                  <div class="contributor-stats mt-2">
-                    <span><i class="ni ni-books-2"></i>{{ person.publications }} Publications</span>
-                    <span><i class="ni ni-chart-bar-32"></i>{{ person.citations }} Citations</span>
-                    <span><i class="ni ni-collection"></i>{{ person.projects }} Projects</span>
-                  </div>
+                  <p class="text-muted mt-2 mb-2">{{ person.bio|truncatewords:25 }}</p>
                 </div>
               </div>
             </a>

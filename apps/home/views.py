@@ -10,77 +10,66 @@ from django.urls import reverse
 
 # Sample data for contributors - in a real app, this would come from a database
 CONTRIBUTORS = {
-    'Paul-yang': {
+    'paul-yang': {
         'name': 'Dr. Paul Yang',
         'role': 'Principal Investigator',
         'department': 'Department of Physics',
-        'image': '/static/assets/img/theme/team-4.jpg',
-        'bio': 'Dr. Yang is a distinguished researcher in materials science. His work focuses on developing new computational methods for studying such systems.',
-        'publications': 10,
-        'citations': 12,
-        'projects': 10,
+        'image': '/static/assets/img/theme/paul.jpg',
+        'bio': 'Dr. Yang is a distinguished researcher in materials science and quantum computing. His work focuses on developing new computational methods for studying quantum systems and their applications in materials discovery.',
+        'publications': 3,
+        'citations': 8,
+        'projects': 5,
+        'email': 'Paul.Yang@hofstra.edu',
+        # 'phone': '+1 (555) 123-4567',
+        'Website': 'https://paul-st-young.github.io/cv/',
         'interests': ['Quantum Computing', 'Materials Science', 'Computational Physics'],
-        'recent_publications': [
-            {
-                'title': 'Quantum Computing Applications in Materials Science',
-                'journal': 'Nature Physics',
-                'year': '2025'
-            },
-            {
-                'title': 'Novel Approaches to Quantum Simulation',
-                 
-                'year': '2024'
-            }
-        ]
-    },
-    'Emilia-Szynwald': {
-        'name': 'Emilia Szynwald',
-        'role': 'Research student',
-        'department': 'Computer Science Department',
-        'image': '/static/assets/img/theme/team-1.jpg',
-        'bio': 'Emilia specializes in molecular modeling. Her research combines machine learning with traditional elemental simulation methods.',
-        'publications': 35,
-        'citations': 850,
-        'projects': 8,
-        'interests': ['Computational physics', 'Machine Learning', 'Molecular Dynamics'],
-        'recent_publications': [
-            {
-                'title': 'Machine Learning for Molecular Property Prediction',
-                 
-                'year': '2025'
-            },
-            {
-                'title': 'Neural Networks in Chemical Space Exploration',
-                
-                'year': '2024'
-            }
-        ]
-    },
-    'james-smith': {
-        'name': 'Dr. James Smith',
-        'role': 'Assistant Professor',
-        'department': 'Department of Physics',
-        'image': '/static/assets/img/theme/team-2.jpg',
-        'bio': '',
-        'publications': 28,
-        'citations': 650,
-        'projects': 6,
-        'interests': ['Physics', 'Quantum  Theory', ' '],
-        'recent_publications': [
-            {
-                'title': ' ',
-                
-                'year': '2025'
-            },
-            {
-                'title': ' ',
-                
-                'year': '2024'
-            }
-        ]
-    },
        
+        'current_work': [
+            # 'Developing quantum algorithms for materials discovery',
+            # 'Building open-source quantum simulation frameworks',
+            # 'Collaborating on quantum machine learning applications'
+        ]
+    },
+    'emilia-szynwald': {
+        'name': 'Emilia Szynwald',
+        'role': 'Undergraduate Research Student',
+        'department': 'Department of Computer Science',
+        'image': '/static/assets/img/theme/emilia.png',
+        'bio': 'Emilia specializes in Computer Science and machine learning. Her research combines cutting-edge ML techniques with traditional computational physics methods to predict molecular properties and accelerate elemental physics discorveries.',
+      
+        'email': 'ESzynwald1@pride.hofstra.edu',
+     
+
+        'interests': ['Computational Physics', 'Machine Learning', 'Quantum Physics'],
+        'recent_publications': [
+            
+        ],
+        'current_work': [
+            'Modeling Charged Multilayer Devices with Defects Using JAX',
+        ]
+    },
+    'cameron getner': {
+        'name': 'Cameron Getner',
+        'role': 'Undergraduate Research Student',
+
+        'image': '/static/assets/img/theme/cameron.png',
+        'bio': 'Cameron is a talented undergraduate researcher specializing in computational physics and scientific visualization. Her work focuses on creating interactive tools and simulations that make complex physics concepts more accessible to students and researchers.',
+        # 'publications': 0,
+        # 'citations': 0,
+        # 'projects': 1,
+        'email': 'MBogartGetner1@pride.hofstra.edu',
+        # 'phone': 'placeholder',
+        # 'office': 'Physics Building, Room 412',
+        'interests': ['Computational Physics', ],
+        'recent_publications': [
+          
+        ],
+        'current_work': [
+            
+            'Using DFT to simulate electrons in moiré superlattices'
+        ]
     }
+}
 
 from .cell_visualization import get_cell_plots
 
@@ -130,6 +119,16 @@ def cells(request):
         'line_width': line_width,
     }
     html_template = loader.get_template('home/cells.html')
+    return HttpResponse(html_template.render(context, request))
+
+def cameron_research(request):
+    """
+    Cameron Getner's research page on DFT simulations of moiré superlattices
+    """
+    context = {
+        'segment': 'cameron_research'
+    }
+    html_template = loader.get_template('home/cameron_research.html')
     return HttpResponse(html_template.render(context, request))
 
 def people(request):
